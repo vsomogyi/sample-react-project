@@ -1,25 +1,30 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+import createStore from './store/createStore';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import List from './sections/list';
+import Add from './sections/add';
+import 'symbol-observable';
+import { from } from 'rxjs';
+import { setObservableConfig } from 'recompose';
+
+setObservableConfig({ fromESObservable: from });
+
+const store = createStore();
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Provider store={store}>
+          <Router>
+            <Switch>
+              <Route path="/add" component={Add} />
+              <Route path="/" component={List} />
+            </Switch>
+          </Router>
+        </Provider>
       </div>
     );
   }
